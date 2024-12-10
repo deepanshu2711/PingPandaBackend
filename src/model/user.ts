@@ -15,6 +15,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    apiKey: {
+      type: String,
+      required: true,
+    },
     eventCategories: [
       {
         type: mongoose.Schema.Types.ObjectId,

@@ -1,1 +1,1 @@
-{"root":["./src/index.ts"],"version":"5.7.2"}
+{"root":["./src/bd.ts","./src/index.ts","./src/controllers/auth.ts","./src/helpers/generate-jwt.ts","./src/middlewares/validate-middleware.ts","./src/model/event-category.ts","./src/model/event.ts","./src/model/user.ts","./src/routes/auth.ts","./src/validators/auth.ts"],"version":"5.7.2"}

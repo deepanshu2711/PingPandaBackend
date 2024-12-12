@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { User } from "../model/user";
 import bcryptjs from "bcryptjs";
-import jwt from "jsonwebtoken";
 import { generateJwt } from "../helpers/generate-jwt";
 
 export const signIn = async (req: Request, res: Response) => {
@@ -20,13 +19,16 @@ export const signIn = async (req: Request, res: Response) => {
     }
 
     const token = generateJwt(user._id as unknown as string, user.apiKey);
-
-    res.cookie("token", token, {
-      path: "/",
-      httpOnly: true,
+    res.status(200).json({
+      message: "Login successful",
+      token: token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        apiKey: user.apiKey,
+      },
     });
-
-    res.status(200).json({ message: "Login successful" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal server error" });
@@ -53,19 +55,18 @@ export const signUp = async (req: Request, res: Response) => {
     });
 
     const token = generateJwt(user._id as unknown as string, user.apiKey);
-
-    res.cookie("token", token, {
-      path: "/",
-      httpOnly: true,
+    res.status(201).json({
+      message: "User created successfully",
+      token: token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        apiKey: user.apiKey,
+      },
     });
-    res.status(201).json({ message: "User created successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal server error" });
   }
-};
-
-export const Logout = (req: Request, res: Response) => {
-  res.clearCookie("token");
-  res.status(200).json({ message: "Logout successful" });
 };

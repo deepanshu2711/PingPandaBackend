@@ -4,6 +4,8 @@ import { authRouter } from "./routes/auth";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import { eventCategoryRouter } from "./routes/event-category";
+
 dotenv.config();
 
 const app = express();
@@ -19,6 +21,7 @@ app.use(
 );
 
 app.use("/api/auth", authRouter);
+app.use("/api/event-category", eventCategoryRouter);
 
 app.listen(8080, () => {
   console.log("Server is running on port 8080");

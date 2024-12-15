@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { EventCategory } from "./model/event-category";
 
 export const connectDb = async () => {
   try {

@@ -6,6 +6,7 @@ import { deleteEventCategory } from "../controllers/event-categories/delete-even
 import { createEventCategory } from "../controllers/event-categories/create-event-category";
 import { validate } from "../middlewares/validate-middleware";
 import { eventCategorySchema } from "../validators/event-category";
+import { quickStartEventCategory } from "../controllers/event-categories/quick-start-event-category";
 
 export const eventCategoryRouter = express.Router();
 
@@ -26,4 +27,10 @@ eventCategoryRouter.post(
   verifyToken,
   validate(eventCategorySchema),
   createEventCategory
+);
+
+eventCategoryRouter.get(
+  "/quick-start/:userId",
+  verifyToken,
+  quickStartEventCategory
 );

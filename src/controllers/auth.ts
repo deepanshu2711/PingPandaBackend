@@ -46,7 +46,7 @@ export const signUp = async (req: Request, res: Response) => {
 
     const hashedPassword = await bcryptjs.hash(password, 10);
 
-    const apiKey = "pingpanda+" + Math.random().toString(36).substring(2, 15);
+    const apiKey = "pingpanda_" + Math.random().toString(36).substring(2, 15);
     const user = await User.create({
       email,
       password: hashedPassword,

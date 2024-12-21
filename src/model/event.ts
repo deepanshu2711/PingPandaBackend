@@ -4,7 +4,6 @@ export const eventSchema = new mongoose.Schema(
   {
     formattedString: {
       type: String,
-      required: true,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -13,7 +12,6 @@ export const eventSchema = new mongoose.Schema(
     },
     name: {
       type: String,
-      required: true,
     },
     fields: {
       type: JSON,

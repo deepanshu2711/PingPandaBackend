@@ -3,7 +3,7 @@ import { EventCategory } from "../../model/event-category";
 
 export const quickStartEventCategory = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
+    const { userId } = req.body;
     const categories = [
       { name: "Bug", emoji: "🐛", color: "#45B7D1", user: userId },
       { name: "Sale", emoji: "💰", color: "#FFA07A", user: userId },

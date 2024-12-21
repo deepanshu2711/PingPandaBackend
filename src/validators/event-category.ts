@@ -6,3 +6,7 @@ export const eventCategorySchema = z.object({
   emoji: z.string().min(1, { message: "Emoji is required" }),
   userId: z.string().min(1, { message: "User ID is required" }),
 });
+
+export const quickStartEventCategorySchema = z.object({
+  userId: z.string().min(1, { message: "userId is missing" }),
+});

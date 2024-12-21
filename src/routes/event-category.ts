@@ -5,8 +5,12 @@ import { getEventCategories } from "../controllers/event-categories/get-event-ca
 import { deleteEventCategory } from "../controllers/event-categories/delete-event-category";
 import { createEventCategory } from "../controllers/event-categories/create-event-category";
 import { validate } from "../middlewares/validate-middleware";
-import { eventCategorySchema } from "../validators/event-category";
+import {
+  eventCategorySchema,
+  quickStartEventCategorySchema,
+} from "../validators/event-category";
 import { quickStartEventCategory } from "../controllers/event-categories/quick-start-event-category";
+import { getEventCategoryDetails } from "../controllers/event-categories/get-event-cateegory-details";
 
 export const eventCategoryRouter = express.Router();
 
@@ -29,8 +33,15 @@ eventCategoryRouter.post(
   createEventCategory
 );
 
-eventCategoryRouter.get(
-  "/quick-start/:userId",
+eventCategoryRouter.post(
+  "/quick-start",
   verifyToken,
+  validate(quickStartEventCategorySchema),
   quickStartEventCategory
+);
+
+eventCategoryRouter.get(
+  "/get-event-category-details/:categoryName/:userId",
+  verifyToken,
+  getEventCategoryDetails
 );

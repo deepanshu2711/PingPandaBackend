@@ -1,7 +1,12 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { EventCategory } from "../../model/event-category";
+import { errorResponce, successResponce } from "../../utils/responses";
 
-export const createEventCategory = async (req: Request, res: Response) => {
+export const createEventCategory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { name, userId, color, emoji } = req.body;
   try {
     const existingCategory = await EventCategory.findOne({
@@ -9,20 +14,20 @@ export const createEventCategory = async (req: Request, res: Response) => {
       user: userId,
     });
     if (existingCategory) {
-      res
-        .status(400)
-        .json({ error: "Event category with this name already exists" });
-      return;
+      return errorResponce(
+        res,
+        400,
+        "Event category with this name already exists"
+      );
     }
-    const eventCategory = await EventCategory.create({
+    await EventCategory.create({
       name,
       user: userId,
       color,
       emoji,
     });
-    res.status(200).json({ eventCategory: eventCategory });
+    successResponce(res, null, "Event category created successfully");
   } catch (error) {
-    console.log("CREATE EVENT CATEGORY ERROR", error);
-    res.status(500).json({ error: "Internal server error" });
+    next(error);
   }
 };

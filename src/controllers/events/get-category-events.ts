@@ -1,8 +1,13 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { Event } from "../../model/event";
 import { startOfToday, startOfWeek, startOfMonth } from "date-fns";
+import { successResponce } from "../../utils/responses";
 
-export const getCategoryEvents = async (req: Request, res: Response) => {
+export const getCategoryEvents = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { categoryId } = req.params;
   const { period } = req.query;
 
@@ -28,9 +33,8 @@ export const getCategoryEvents = async (req: Request, res: Response) => {
       eventCategory: categoryId,
       createdAt: { $gte: filterDate },
     });
-    res.status(200).json({ events: events });
+    successResponce(res, events, "Events fetched successfully");
   } catch (error) {
-    console.log("GET CATEGORY EVENTS ERROR", error);
-    res.status(500).json({ error: "Internal server error" });
+    next(error);
   }
 };

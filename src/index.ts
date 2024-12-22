@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { eventCategoryRouter } from "./routes/event-category";
 import { eventRouter } from "./routes/events";
+import { errorHandler } from "./middlewares/errorHandler";
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/event-category", eventCategoryRouter);
 app.use("/api/event", eventRouter);
 
+app.use(errorHandler);
 app.listen(8080, () => {
   console.log("Server is running on port 8080");
 });

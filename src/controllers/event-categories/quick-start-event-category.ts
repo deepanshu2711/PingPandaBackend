@@ -1,7 +1,12 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { EventCategory } from "../../model/event-category";
+import { successResponce } from "../../utils/responses";
 
-export const quickStartEventCategory = async (req: Request, res: Response) => {
+export const quickStartEventCategory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { userId } = req.body;
     const categories = [
@@ -11,9 +16,8 @@ export const quickStartEventCategory = async (req: Request, res: Response) => {
     ];
 
     await EventCategory.insertMany(categories);
-    res.status(200).json({ message: "Quick start event categories added" });
+    successResponce(res, null, "Quick start event categories added");
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Something went wrong" });
+    next(error);
   }
 };

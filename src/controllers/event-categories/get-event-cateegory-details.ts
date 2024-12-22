@@ -1,8 +1,13 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { EventCategory } from "../../model/event-category";
 import mongoose from "mongoose";
+import { errorResponce, successResponce } from "../../utils/responses";
 
-export const getEventCategoryDetails = async (req: Request, res: Response) => {
+export const getEventCategoryDetails = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { categoryName, userId } = req.params;
   try {
     const eventCategory = await EventCategory.aggregate([
@@ -22,12 +27,10 @@ export const getEventCategoryDetails = async (req: Request, res: Response) => {
       },
     ]);
     if (!eventCategory) {
-      res.status(404).json({ error: "Event category not found" });
-      return;
+      return errorResponce(res, 404, "Event category not found");
     }
-    res.status(200).json({ eventCategory: eventCategory });
+    successResponce(res, eventCategory, "Event category details");
   } catch (error) {
-    console.log("GET EVENT CATEGORY DETAILS ERROR", error);
-    res.status(500).json({ error: "Internal server error" });
+    next(error);
   }
 };

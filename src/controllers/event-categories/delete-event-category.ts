@@ -1,7 +1,12 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { EventCategory } from "../../model/event-category";
+import { errorResponce, successResponce } from "../../utils/responses";
 
-export const deleteEventCategory = async (req: Request, res: Response) => {
+export const deleteEventCategory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { categoryName } = req.params;
   const { userId } = req.query;
   try {
@@ -10,12 +15,10 @@ export const deleteEventCategory = async (req: Request, res: Response) => {
       user: userId,
     });
     if (result.deletedCount === 0) {
-      res.status(404).json({ error: "Event category not found" });
-      return;
+      return errorResponce(res, 404, "Event category not found");
     }
-    res.status(200).json({ message: "Event category deleted successfully" });
+    successResponce(res, null, "Event category deleted successfully");
   } catch (error) {
-    console.log("DELETE EVENT CATEGORY ERROR", error);
-    res.status(500).json({ error: "Internal server error" });
+    next(error);
   }
 };

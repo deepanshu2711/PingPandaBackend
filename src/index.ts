@@ -8,10 +8,15 @@ import { eventCategoryRouter } from "./routes/event-category";
 import { eventRouter } from "./routes/events";
 import { errorHandler } from "./middlewares/errorHandler";
 
+// workers
+import "./workers/sendDMWorker";
+import { startDiscordBot } from "./config/discord";
+
 dotenv.config();
 
 const app = express();
 connectDb();
+export const DiscordClient = startDiscordBot();
 
 app.use(express.json());
 app.use(cookieParser());

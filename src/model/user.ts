@@ -19,6 +19,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    discordId: {
+      type: String,
+    },
     eventCategories: [
       {
         type: mongoose.Schema.Types.ObjectId,

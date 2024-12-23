@@ -3,6 +3,19 @@ import { Event } from "../../model/event";
 import { User } from "../../model/user";
 import { EventCategory } from "../../model/event-category";
 import { errorResponce, successResponce } from "../../utils/responses";
+import { sendDmJob } from "../../jobs/sendDmJob";
+import { Types } from "mongoose";
+
+export interface IEventCategory {
+  _id: Types.ObjectId;
+  name: string;
+  color: string;
+  emoji: string;
+  user: Types.ObjectId;
+  events: Types.ObjectId[];
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export const createCategoryEvent = async (
   req: Request,
@@ -37,7 +50,7 @@ export const createCategoryEvent = async (
       user: user._id,
     });
 
-    //Need to send the discord message after this
+    await sendDmJob(existingCategory.toObject(), fields);
 
     successResponce(res, null, "Event created successfully");
   } catch (error) {

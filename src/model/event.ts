@@ -22,6 +22,10 @@ export const eventSchema = new mongoose.Schema(
       ref: "EventCategory",
       required: true,
     },
+    delivered: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

@@ -44,13 +44,13 @@ export const createCategoryEvent = async (
       return errorResponce(res, 404, "Event category not found");
     }
 
-    await Event.create({
+    const event = await Event.create({
       eventCategory: existingCategory._id,
       fields,
       user: user._id,
     });
 
-    await sendDmJob(existingCategory.toObject(), fields);
+    await sendDmJob(existingCategory.toObject(), fields, event._id.toString());
 
     successResponce(res, null, "Event created successfully");
   } catch (error) {

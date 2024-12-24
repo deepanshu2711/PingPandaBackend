@@ -10,7 +10,18 @@ export const sendDmQueue = new Bull("sendDmQueue", {
 
 export const sendDmJob = async (
   eventCategory: IEventCategory,
-  fields: JSON
+  fields: JSON,
+  eventId: string
 ) => {
-  await sendDmQueue.add("sendDm", { eventCategory, fields });
+  await sendDmQueue.add(
+    "sendDm",
+    { eventCategory, fields, eventId },
+    {
+      attempts: 2,
+      backoff: {
+        type: "exponential",
+        delay: 1000,
+      },
+    }
+  );
 };

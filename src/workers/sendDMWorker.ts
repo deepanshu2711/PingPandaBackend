@@ -1,5 +1,6 @@
 import { DiscordClient } from "..";
 import { sendDmQueue } from "../jobs/sendDmJob";
+import { Event } from "../model/event";
 
 sendDmQueue.process("sendDm", async (job) => {
   const { eventCategory, fields } = job.data;
@@ -31,12 +32,15 @@ sendDmQueue.process("sendDm", async (job) => {
   }
 });
 
-sendDmQueue.on("completed", (job) => {
-  //make delivery status true
-  // console.log(`Job ${job.id} completed`);
+sendDmQueue.on("completed", async (job) => {
+  const { eventId } = job.data;
+  try {
+    await Event.updateOne({ _id: eventId }, { delivered: true });
+  } catch (error) {
+    console.log("Error setting delivered status for event", error);
+  }
 });
 
 sendDmQueue.on("failed", (job, err) => {
-  //by defaut delivery status is false
   console.log(`Job ${job.id} failed: ${err.message}`);
 });

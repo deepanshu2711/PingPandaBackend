@@ -50,7 +50,12 @@ export const createCategoryEvent = async (
       user: user._id,
     });
 
-    await sendDmJob(existingCategory.toObject(), fields, event._id.toString());
+    await sendDmJob(
+      existingCategory.toObject(),
+      fields,
+      event._id.toString(),
+      user.discordId || null
+    );
 
     successResponce(res, null, "Event created successfully");
   } catch (error) {

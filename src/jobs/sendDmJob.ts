@@ -11,11 +11,12 @@ export const sendDmQueue = new Bull("sendDmQueue", {
 export const sendDmJob = async (
   eventCategory: IEventCategory,
   fields: JSON,
-  eventId: string
+  eventId: string,
+  discordId: string | null
 ) => {
   await sendDmQueue.add(
     "sendDm",
-    { eventCategory, fields, eventId },
+    { eventCategory, fields, eventId, discordId },
     {
       attempts: 2,
       backoff: {

@@ -3,10 +3,9 @@ import { sendDmQueue } from "../jobs/sendDmJob";
 import { Event } from "../model/event";
 
 sendDmQueue.process("sendDm", async (job) => {
-  const { eventCategory, fields } = job.data;
+  const { eventCategory, fields, discordId } = job.data;
   try {
-    const userId = "519876813191643136";
-    const user = await DiscordClient.users.fetch(userId);
+    const user = await DiscordClient.users.fetch(discordId);
 
     const eventData = {
       title: `${eventCategory.emoji || "🔔"} ${

@@ -11,6 +11,7 @@ import { errorHandler } from "./middlewares/errorHandler";
 // workers
 import "./workers/sendDMWorker";
 import { startDiscordBot } from "./config/discord";
+import { userRouter } from "./routes/user";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use(
 app.use("/api/auth", authRouter);
 app.use("/api/event-category", eventCategoryRouter);
 app.use("/api/event", eventRouter);
+app.use("/api/user", userRouter);
 
 app.use(errorHandler);
 app.listen(8080, () => {

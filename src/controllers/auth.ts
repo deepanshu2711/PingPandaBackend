@@ -4,6 +4,7 @@ import bcryptjs from "bcryptjs";
 import { generateJwt } from "../helpers/generate-jwt";
 import { errorResponce, successResponce } from "../utils/responses";
 import { sendMailJob } from "../jobs/sendMailJob";
+import jwt from "jsonwebtoken";
 
 export const signIn = async (
   req: Request,
@@ -83,6 +84,56 @@ export const signUp = async (
       },
       "User created successfully"
     );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const requestResetPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user)
+      return errorResponce(res, 404, "No account with that email exist.");
+    const token = generateJwt(user._id as unknown as string, user.apiKey);
+
+    await sendMailJob(
+      email,
+      "Reset Password Request",
+      `Hello ${user.name},\n\nWe received a request to reset your password. Please click the below link to reset your password:\n\nResetPassword: http://localhost:3000/resetpassword?token=${token}\n\nIf you did not request a password reset, please ignore this email.\n\nBest regards,\nThe Team`
+    );
+
+    successResponce(res, null, "Password reset email sent successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const resetPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { token, newPassword } = req.body;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+      id: string;
+      apiKey: string;
+    };
+    const user = await User.findOne({ _id: decoded.id });
+    if (!user) {
+      return errorResponce(res, 404, "Invalid token or user does not exist.");
+    }
+
+    const hashedPassword = await bcryptjs.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    successResponce(res, null, "Password reset successfully");
   } catch (error) {
     next(error);
   }

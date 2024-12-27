@@ -40,7 +40,7 @@ app.listen(8080, () => {
 });
 
 //TODO:
-// 1. Send Mail when user signUp;
+// 1. Send Mail when user signUp; (DONE)
 // 2. give option to select whether the user wants email or discord notification when a new event is created;
 // 3. If they want email notification, they need to verify their email;
 // 4. add a new field of email verified in the user model;

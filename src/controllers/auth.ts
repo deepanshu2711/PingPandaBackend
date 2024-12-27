@@ -3,6 +3,7 @@ import { User } from "../model/user";
 import bcryptjs from "bcryptjs";
 import { generateJwt } from "../helpers/generate-jwt";
 import { errorResponce, successResponce } from "../utils/responses";
+import { sendMailJob } from "../jobs/sendMailJob";
 
 export const signIn = async (
   req: Request,
@@ -63,6 +64,12 @@ export const signUp = async (
     });
 
     const token = generateJwt(user._id as unknown as string, user.apiKey);
+    await sendMailJob(
+      user.email,
+      "Welcome to PingPanda 🐼",
+      `Hello ${user.name},\n\nThank you for signing up! We're excited to have you on board.\n\nBest regards,\nThe Team`
+    );
+
     successResponce(
       res,
       {

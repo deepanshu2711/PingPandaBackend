@@ -10,11 +10,13 @@ export const sendMailQueue = new Bull("sendMailQueue", {
 export const sendMailJob = async (
   to: string,
   subject: string,
-  text: string
+  text: string,
+  forEvent: boolean,
+  eventId?: string
 ) => {
   await sendMailQueue.add(
     "sendMail",
-    { to, subject, text },
+    { to, subject, text, forEvent, eventId },
     {
       attempts: 2,
       backoff: {

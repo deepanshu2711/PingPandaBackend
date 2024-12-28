@@ -5,6 +5,8 @@ import { EventCategory } from "../../model/event-category";
 import { errorResponce, successResponce } from "../../utils/responses";
 import { sendDmJob } from "../../jobs/sendDmJob";
 import { Types } from "mongoose";
+import { sendMailJob } from "../../jobs/sendMailJob";
+import { sendNotification } from "../../utils/sendNotification";
 
 export interface IEventCategory {
   _id: Types.ObjectId;
@@ -13,6 +15,7 @@ export interface IEventCategory {
   emoji: string;
   user: Types.ObjectId;
   events: Types.ObjectId[];
+  deliveryType: "discord" | "email";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -50,11 +53,12 @@ export const createCategoryEvent = async (
       user: user._id,
     });
 
-    await sendDmJob(
+    await sendNotification(
       existingCategory.toObject(),
       fields,
       event._id.toString(),
-      user.discordId || null
+      user.discordId?.toString() || "",
+      user.email
     );
 
     successResponce(res, null, "Event created successfully");

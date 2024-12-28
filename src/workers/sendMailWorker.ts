@@ -1,4 +1,5 @@
 import { sendMailQueue } from "../jobs/sendMailJob";
+import { Event } from "../model/event";
 import { sendMail } from "../utils/mailer";
 
 sendMailQueue.process("sendMail", async (job) => {
@@ -10,9 +11,16 @@ sendMailQueue.process("sendMail", async (job) => {
   }
 });
 
-// sendMailQueue.on("completed", (job) => {
-//   console.log(`Mail sent seccessfully`);
-// });
+sendMailQueue.on("completed", async (job) => {
+  const { forEvent, eventId } = job.data;
+  if (forEvent === true) {
+    try {
+      await Event.updateOne({ _id: eventId }, { delivered: true });
+    } catch (error) {
+      console.log("Error setting delivered status for event", error);
+    }
+  }
+});
 
 sendMailQueue.on("failed", (job, error) => {
   console.log(`Job ${job.id} failed: ${error.message}`);

@@ -41,11 +41,12 @@ app.listen(8080, () => {
 
 //TODO:
 // 1. Send Mail when user signUp; (DONE)
-// 2. give option to select whether the user wants email or discord notification when a new event is created;
+// 2. give option to select whether the user wants email or discord notification when a new event is created; (DONE)
 // 3. If they want email notification, they need to verify their email;
 // 4. add a new field of email verified in the user model;
-// 5. add a filed of notification type (Discord or Email) in category model;
+// 5. add a filed of notification type (Discord or Email) in category model; (DONE)
 
-// 6. request-password-reset api endpoint
-// 7. reset-password api endpoint
+// 6. request-password-reset api endpoint (DONE)
+// 7. reset-password api endpoint (DONE)
+
 // 8. add logic to schedule events and add cronjob to send notifications for the events;

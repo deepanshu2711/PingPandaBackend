@@ -68,7 +68,8 @@ export const signUp = async (
     await sendMailJob(
       user.email,
       "Welcome to PingPanda 🐼",
-      `Hello ${user.name},\n\nThank you for signing up! We're excited to have you on board.\n\nBest regards,\nThe Team`
+      `Hello ${user.name},\n\nThank you for signing up! We're excited to have you on board.\n\nBest regards,\nThe Team`,
+      false
     );
 
     successResponce(
@@ -104,7 +105,8 @@ export const requestResetPassword = async (
     await sendMailJob(
       email,
       "Reset Password Request",
-      `Hello ${user.name},\n\nWe received a request to reset your password. Please click the below link to reset your password:\n\nResetPassword: http://localhost:3000/resetpassword?token=${token}\n\nIf you did not request a password reset, please ignore this email.\n\nBest regards,\nThe Team`
+      `Hello ${user.name},\n\nWe received a request to reset your password. Please click the below link to reset your password:\n\nResetPassword: http://localhost:3000/reset-password?token=${token}\n\nIf you did not request a password reset, please ignore this email.\n\nBest regards,\nThe Team`,
+      false
     );
 
     successResponce(res, null, "Password reset email sent successfully");

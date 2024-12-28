@@ -5,6 +5,7 @@ export const eventCategorySchema = z.object({
   color: z.string().min(1, { message: "Color is required" }),
   emoji: z.string().min(1, { message: "Emoji is required" }),
   userId: z.string().min(1, { message: "User ID is required" }),
+  deliveryType: z.string().min(1).optional(),
 });
 
 export const quickStartEventCategorySchema = z.object({

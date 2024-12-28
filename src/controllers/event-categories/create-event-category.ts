@@ -7,7 +7,7 @@ export const createEventCategory = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { name, userId, color, emoji } = req.body;
+  const { name, userId, color, emoji, deliveryType } = req.body;
   try {
     const existingCategory = await EventCategory.findOne({
       name,
@@ -25,6 +25,7 @@ export const createEventCategory = async (
       user: userId,
       color,
       emoji,
+      deliveryType,
     });
     successResponce(res, null, "Event category created successfully");
   } catch (error) {

@@ -25,6 +25,12 @@ const eventCategorySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    deliveryType: {
+      type: String,
+      enum: ["discord", "email"],
+      required: true,
+      default: "discord",
+    },
   },
   { timestamps: true }
 );

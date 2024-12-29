@@ -29,7 +29,7 @@ const eventCategorySchema = new mongoose.Schema(
       type: String,
       enum: ["discord", "email"],
       required: true,
-      default: "discord",
+      default: "email",
     },
   },
   { timestamps: true }

@@ -23,3 +23,10 @@ export const resetPasswordSchema = z.object({
     .string()
     .min(3, { message: "Password must be at least 3 characters." }),
 });
+
+export const VerifyEmailSchema = z.object({
+  email: z.string().email().min(1, { message: "Email is required" }),
+  verificationCode: z
+    .string()
+    .min(6, { message: "Verification code must be at least 6 characters " }),
+});

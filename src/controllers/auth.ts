@@ -5,6 +5,8 @@ import { generateJwt } from "../helpers/generate-jwt";
 import { errorResponce, successResponce } from "../utils/responses";
 import { sendMailJob } from "../jobs/sendMailJob";
 import jwt from "jsonwebtoken";
+import { TemporaryUser } from "../model/temporary-user";
+import { generateVerificationCode } from "../helpers/generate-verification-code";
 
 export const signIn = async (
   req: Request,
@@ -55,36 +57,28 @@ export const signUp = async (
     }
 
     const hashedPassword = await bcryptjs.hash(password, 10);
+    const verificationCode = generateVerificationCode().toString();
 
-    const apiKey = "pingpanda_" + Math.random().toString(36).substring(2, 15);
-    const user = await User.create({
-      email,
-      password: hashedPassword,
-      name,
-      apiKey,
-    });
+    const temporaryUser = await TemporaryUser.findOneAndUpdate(
+      { email },
+      {
+        email,
+        password: hashedPassword,
+        name,
+        isEmailVerified: false,
+        verificationCode,
+      },
+      { new: true, upsert: true }
+    );
 
-    const token = generateJwt(user._id as unknown as string, user.apiKey);
     await sendMailJob(
-      user.email,
-      "Welcome to PingPanda 🐼",
-      `Hello ${user.name},\n\nThank you for signing up! We're excited to have you on board.\n\nBest regards,\nThe Team`,
+      email,
+      "Verify Email Request",
+      `Hello ${temporaryUser.name},\n\nPlease use the following code to verify your email address:\n\nVerification Code: ${verificationCode}\n\nIf you did not request this, please ignore this email.\n\nBest regards,\nThe Team`,
       false
     );
 
-    successResponce(
-      res,
-      {
-        token: token,
-        user: {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          apiKey: user.apiKey,
-        },
-      },
-      "User created successfully"
-    );
+    return successResponce(res, null, "Verification email sent successfully");
   } catch (error) {
     next(error);
   }
@@ -136,6 +130,61 @@ export const resetPassword = async (
     await user.save();
 
     successResponce(res, null, "Password reset successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const verifyEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { email, verificationCode } = req.body;
+  try {
+    const user = await TemporaryUser.findOne({ email });
+    if (!user) return errorResponce(res, 404, "No user with this email exists");
+
+    if (user.verificationCode !== verificationCode) {
+      return errorResponce(res, 400, "Invalid verification code");
+    }
+
+    const apiKey = "pingpanda_" + Math.random().toString(36).substring(2, 15);
+
+    const verifiedUser = await User.create({
+      email,
+      password: user.password,
+      name: user.name,
+      apiKey,
+    });
+
+    await TemporaryUser.deleteOne({ email });
+
+    const token = generateJwt(
+      verifiedUser._id as unknown as string,
+      verifiedUser.apiKey
+    );
+
+    await sendMailJob(
+      verifiedUser.email,
+      "Welcome to PingPanda 🐼",
+      `Hello ${verifiedUser.name},\n\nThank you for signing up! We're excited to have you on board.\n\nBest regards,\nThe Team`,
+      false
+    );
+
+    successResponce(
+      res,
+      {
+        token: token,
+        user: {
+          _id: verifiedUser._id,
+          name: verifiedUser.name,
+          email: verifiedUser.email,
+          apiKey: verifiedUser.apiKey,
+        },
+      },
+      "User created successfully"
+    );
   } catch (error) {
     next(error);
   }

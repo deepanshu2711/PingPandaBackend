@@ -3,7 +3,7 @@ import { IEventCategory } from "../controllers/events/create-category-event";
 
 export const sendDmQueue = new Bull("sendDmQueue", {
   redis: {
-    host: "localhost",
+    host: "redis",
     port: 6379,
   },
 });

@@ -2,7 +2,7 @@ import Bull from "bull";
 
 export const sendMailQueue = new Bull("sendMailQueue", {
   redis: {
-    host: "localhost",
+    host: "redis",
     port: 6379,
   },
 });

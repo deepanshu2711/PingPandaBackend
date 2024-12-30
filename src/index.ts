@@ -28,7 +28,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   })
 );
@@ -56,4 +56,4 @@ app.listen(8080, () => {
 
 //PENDING TASKS
 // 8. add logic to schedule events and add cronjob to send notifications for the events;
-// 9. add a cronejob to remove user from temperory-users after one day
+// 9. add a cronejob to remove user from temperory-users after 7 days (DONE)

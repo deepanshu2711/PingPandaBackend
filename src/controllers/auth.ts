@@ -7,6 +7,7 @@ import { sendMailJob } from "../jobs/sendMailJob";
 import jwt from "jsonwebtoken";
 import { TemporaryUser } from "../model/temporary-user";
 import { generateVerificationCode } from "../helpers/generate-verification-code";
+import { generateApiKey } from "../helpers/generate-api-key";
 
 export const signIn = async (
   req: Request,
@@ -149,7 +150,7 @@ export const verifyEmail = async (
       return errorResponce(res, 400, "Invalid verification code");
     }
 
-    const apiKey = "pingpanda_" + Math.random().toString(36).substring(2, 15);
+    const apiKey = generateApiKey(user._id.toString());
 
     const verifiedUser = await User.create({
       email,

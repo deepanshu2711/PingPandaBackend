@@ -43,8 +43,6 @@ app.listen(8080, () => {
   console.log("Server is running on port 8080");
 });
 
-//TODO:
-
 //COMPLETED
 // 1. Send Mail when user signUp; (DONE)
 // 2. give option to select whether the user wants email or discord notification when a new event is created; (DONE)
@@ -53,7 +51,21 @@ app.listen(8080, () => {
 // 5. add a filed of notification type (Discord or Email) in category model; (DONE)
 // 6. request-password-reset api endpoint (DONE)
 // 7. reset-password api endpoint (DONE)
+// 8. add a cronejob to remove user from temperory-users after 7 days (DONE)
+// 9. Add Docker Compose for Development (DONE)
+// 10. Implement Rate Limiting on critical endpoints (DONE)
 
+// Add Caching with Redis: (NOT NEEDED IN THIS APPLICATION AS MOSTLY ALL ENDPOINTS ARE PARTICULAR USER BASED)
+
+//TODO:
 //PENDING TASKS
-// 8. add logic to schedule events and add cronjob to send notifications for the events;
-// 9. add a cronejob to remove user from temperory-users after 7 days (DONE)
+// Implement WebSockets for Real-Time Updates:
+// Add Unit and Integration Tests:
+// Implement CI/CD Pipeline:
+// Add Scheduled Tasks:
+// Add a Notification System:
+// Implement OAuth Authentication:
+// Implement Microservices Architecture:
+// Implement Logging and Monitoring:
+// Implement a notification system to send alerts and updates to users via email, SMS, or push notifications.
+// Implement a Payment System:

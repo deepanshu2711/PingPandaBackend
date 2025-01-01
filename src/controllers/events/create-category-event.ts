@@ -3,9 +3,7 @@ import { Event } from "../../model/event";
 import { User } from "../../model/user";
 import { EventCategory } from "../../model/event-category";
 import { errorResponce, successResponce } from "../../utils/responses";
-import { sendDmJob } from "../../jobs/sendDmJob";
 import { Types } from "mongoose";
-import { sendMailJob } from "../../jobs/sendMailJob";
 import { sendNotification } from "../../utils/sendNotification";
 
 export interface IEventCategory {

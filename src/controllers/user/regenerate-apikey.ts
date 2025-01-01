@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { User } from "../../model/user";
 import { successResponce } from "../../utils/responses";
+import { generateApiKey } from "../../helpers/generate-api-key";
+import { User } from "../../model/user";
 
 export const regenerateApiKey = async (
   req: Request,
@@ -9,7 +10,7 @@ export const regenerateApiKey = async (
 ) => {
   const { userId } = req.params;
   try {
-    const apiKey = "pingpanda_" + Math.random().toString(36).substring(2, 15);
+    const apiKey = generateApiKey(userId);
     await User.updateOne({ _id: userId }, { apiKey: apiKey });
     successResponce(res, { apiKey }, "API key regenerated successfully");
   } catch (error) {

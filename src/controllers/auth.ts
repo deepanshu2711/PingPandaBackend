@@ -36,6 +36,7 @@ export const signIn = async (
           name: user.name,
           email: user.email,
           apiKey: user.apiKey,
+          discordId: user.discordId,
         },
       },
       "Login successful"

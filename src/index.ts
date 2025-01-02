@@ -63,7 +63,7 @@ app.listen(8080, () => {
 // Add Unit and Integration Tests:
 // Implement CI/CD Pipeline:
 // Add Scheduled Tasks:
-// Add a Notification System:
+// Add a Notification System
 // Implement OAuth Authentication:
 // Implement Microservices Architecture:
 // Implement Logging and Monitoring:
